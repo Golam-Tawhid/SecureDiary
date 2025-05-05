@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+
+{% block title %}Welcome to Secure Diary{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8 text-center">
+        <div class="card shadow-lg border-0 mb-5">
+            <div class="card-body p-5">
+                <h1 class="display-4 mb-4"><i class="fas fa-lock text-primary me-3"></i>Secure Diary</h1>
+                <p class="lead">Your private thoughts, securely encrypted.</p>
+                <hr class="my-4">
+                <p class="mb-4">
+                    Welcome to Secure Diary, where your personal thoughts and memories are protected with
+                    military-grade encryption. We prioritize your privacy and security.
+                </p>
+                
+                <div class="row mt-5 mb-4">
+                    <div class="col-md-4">
+                        <div class="feature-box text-center p-3">
+                            <i class="fas fa-shield-alt fa-3x text-primary mb-3"></i>
+                            <h3>Secure</h3>
+                            <p>AES-256 encryption keeps your entries private and secure.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="feature-box text-center p-3">
+                            <i class="fas fa-user-lock fa-3x text-primary mb-3"></i>
+                            <h3>Private</h3>
+                            <p>Only you can access your personal diary entries.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="feature-box text-center p-3">
+                            <i class="fas fa-book fa-3x text-primary mb-3"></i>
+                            <h3>Simple</h3>
+                            <p>Easy to use interface for managing your thoughts.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mt-5">
+                    {% if current_user.is_authenticated %}
+                        <a href="{{ url_for('diary.dashboard') }}" class="btn btn-primary btn-lg me-3">
+                            <i class="fas fa-book-open me-2"></i>Go to My Diary
+                        </a>
+                    {% else %}
+                        <a href="{{ url_for('auth.login') }}" class="btn btn-primary btn-lg me-3">
+                            <i class="fas fa-sign-in-alt me-2"></i>Login
+                        </a>
+                        <a href="{{ url_for('auth.register') }}" class="btn btn-outline-primary btn-lg">
+                            <i class="fas fa-user-plus me-2"></i>Register
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        
+        <div class="card border-0 shadow-lg">
+            <div class="card-body p-4">
+                <h2 class="mb-4">How It Works</h2>
+                <div class="row">
+                    <div class="col-md-6 mb-4">
+                        <div class="p-3 border rounded">
+                            <h4><i class="fas fa-lock text-primary me-2"></i>Encryption</h4>
+                            <p>Your diary entries are encrypted with AES-256, the gold standard in data protection.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-4">
+                        <div class="p-3 border rounded">
+                            <h4><i class="fas fa-key text-primary me-2"></i>Unique Keys</h4>
+                            <p>Each user has their own unique encryption keys, guaranteeing privacy.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-4">
+                        <div class="p-3 border rounded">
+                            <h4><i class="fas fa-user-shield text-primary me-2"></i>Secure Authentication</h4>
+                            <p>Passwords are hashed with bcrypt, never stored in plain text.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-4">
+                        <div class="p-3 border rounded">
+                            <h4><i class="fas fa-database text-primary me-2"></i>Protected Storage</h4>
+                            <p>Even if database is compromised, your entries remain secure.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
