@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1><i class="fas fa-book me-2"></i>Your Diary</h1>
+            <a href="{{ url_for('diary.create_entry') }}" class="btn btn-primary">
+                <i class="fas fa-plus me-2"></i>New Entry
+            </a>
+        </div>
+        
+        <div class="card shadow border-0">
+            <div class="card-body p-4">
+                {% if entries %}
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Title</th>
+                                    <th>Created</th>
+                                    <th>Last Updated</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for entry in entries %}
+                                    <tr>
+                                        <td>
+                                            <a href="{{ url_for('diary.view_entry', entry_id=entry.id) }}" class="text-decoration-none">
+                                                {{ entry.title }}
+                                            </a>
+                                        </td>
+                                        <td>{{ entry.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
+                                        <td>{{ entry.updated_at.strftime('%Y-%m-%d %H:%M') }}</td>
+                                        <td>
+                                            <div class="btn-group">
+                                                <a href="{{ url_for('diary.view_entry', entry_id=entry.id) }}" class="btn btn-sm btn-outline-primary">
+                                                    <i class="fas fa-eye"></i>
+                                                </a>
+                                                <a href="{{ url_for('diary.edit_entry', entry_id=entry.id) }}" class="btn btn-sm btn-outline-secondary">
+                                                    <i class="fas fa-edit"></i>
+                                                </a>
+                                                <button type="button" class="btn btn-sm btn-outline-danger" 
+                                                        data-bs-toggle="modal" data-bs-target="#deleteModal{{ entry.id }}">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </div>
+                                            
+                                            <!-- Delete confirmation modal -->
+                                            <div class="modal fade" id="deleteModal{{ entry.id }}" tabindex="-1" aria-labelledby="deleteModalLabel{{ entry.id }}" aria-hidden="true">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="deleteModalLabel{{ entry.id }}">Confirm Delete</h5>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            Are you sure you want to delete the entry "<strong>{{ entry.title }}</strong>"?
+                                                            This action cannot be undone.
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                                            <form action="{{ url_for('diary.delete_entry', entry_id=entry.id) }}" method="POST">
+                                                                <button type="submit" class="btn btn-danger">Delete</button>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% else %}
+                    <div class="text-center p-5">
+                        <i class="fas fa-book-open fa-4x mb-3 text-muted"></i>
+                        <h3>No entries yet</h3>
+                        <p class="text-muted">Create your first diary entry to get started.</p>
+                        <a href="{{ url_for('diary.create_entry') }}" class="btn btn-primary mt-3">
+                            <i class="fas fa-plus me-2"></i>Create First Entry
+                        </a>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+        
+        <div class="card mt-4 border-0 shadow">
+            <div class="card-body p-4">
+                <h3><i class="fas fa-user me-2"></i>Account Information</h3>
+                <p><strong>Username:</strong> {{ current_user.username }}</p>
+                <p><strong>Email:</strong> {{ current_user.email }}</p>
+                <p><strong>Account Created:</strong> {{ current_user.created_at.strftime('%Y-%m-%d') }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
